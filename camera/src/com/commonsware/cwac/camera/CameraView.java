@@ -343,9 +343,9 @@ public class CameraView extends ViewGroup implements AutoFocusCallback {
                                               "Video recording supported only on API Level 11+");
     }
 
-    if (displayOrientation != 0 && displayOrientation != 180) {
+    if (displayOrientation != 0 && displayOrientation != 180 && displayOrientation != 90) {
       throw new UnsupportedOperationException(
-                                              "Video recording supported only in landscape");
+                                              "Video recording not supported 270 dgree");
     }
 
     Camera.Parameters pictureParams=camera.getParameters();
@@ -456,6 +456,7 @@ public class CameraView extends ViewGroup implements AutoFocusCallback {
     }
   }
 
+  @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
   public void stopFaceDetection() {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH
         && camera != null && isDetectingFaces) {
@@ -513,20 +514,21 @@ public class CameraView extends ViewGroup implements AutoFocusCallback {
 
   @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
   public void initPreview(int w, int h, boolean firstRun) {
-    if (camera != null) {
-      Camera.Parameters parameters=camera.getParameters();
+      Log.d(TAG, "init preview:" + previewSize.width + "/" + previewSize.height);
+      if (camera != null) {
+          Camera.Parameters parameters = camera.getParameters();
 
-      parameters.setPreviewSize(previewSize.width, previewSize.height);
+          parameters.setPreviewSize(previewSize.width, previewSize.height);
 
-      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-        parameters.setRecordingHint(getHost().getRecordingHint() != CameraHost.RecordingHint.STILL_ONLY);
+          if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+              parameters.setRecordingHint(getHost().getRecordingHint() != CameraHost.RecordingHint.STILL_ONLY);
+          }
+
+          requestLayout();
+
+          camera.setParameters(getHost().adjustPreviewParameters(parameters));
+          startPreview();
       }
-
-      requestLayout();
-
-      camera.setParameters(getHost().adjustPreviewParameters(parameters));
-      startPreview();
-    }
   }
 
   private void startPreview() {
