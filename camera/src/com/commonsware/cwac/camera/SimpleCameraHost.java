@@ -79,15 +79,15 @@ public class SimpleCameraHost implements CameraHost {
                                        MediaRecorder recorder) {
     if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB
         || CamcorderProfile.hasProfile(cameraId,
-                                       CamcorderProfile.QUALITY_HIGH)) {
-      recorder.setProfile(CamcorderProfile.get(cameraId,
-                                               CamcorderProfile.QUALITY_HIGH));
-    }
-    else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB
-        && CamcorderProfile.hasProfile(cameraId,
                                        CamcorderProfile.QUALITY_LOW)) {
       recorder.setProfile(CamcorderProfile.get(cameraId,
                                                CamcorderProfile.QUALITY_LOW));
+    }
+    else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB
+        && CamcorderProfile.hasProfile(cameraId,
+                                       CamcorderProfile.QUALITY_HIGH)) {
+      recorder.setProfile(CamcorderProfile.get(cameraId,
+                                               CamcorderProfile.QUALITY_HIGH));
     }
     else {
       throw new IllegalStateException(

@@ -514,8 +514,8 @@ public class CameraView extends ViewGroup implements AutoFocusCallback {
 
   @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
   public void initPreview(int w, int h, boolean firstRun) {
-      Log.d(TAG, "init preview:" + previewSize.width + "/" + previewSize.height);
       if (camera != null) {
+          Log.d(TAG, "init preview:" + previewSize.width + "/" + previewSize.height);
           Camera.Parameters parameters = camera.getParameters();
 
           parameters.setPreviewSize(previewSize.width, previewSize.height);
